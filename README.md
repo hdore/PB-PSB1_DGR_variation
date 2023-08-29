@@ -50,7 +50,7 @@ To see the script usage, run `python count_AA_possibilities_in_DGR_regions_v3.py
 
 Dependencies:
 
-This script makes use of Biopython [link to biopython https://biopython.org/]. Biopython must be present on the system, and can be installed with conda: `conda install biopython` 
+This script makes use of [Biopython](https://biopython.org). Biopython must be present on the system, and can be installed with conda: `conda install biopython` 
 
 ### Filter bam file to get read pairs mapping on DGR variable regions
 
@@ -66,13 +66,13 @@ To see all arguments, run `python filter_bam_by_mate_location.py -h`
 
 Dependencies:
 
-This script makes use of Biopython [link to biopython https://biopython.org/] and Numpy [link to numpy https://numpy.org/]. Both must be present on the system, and can be installed with conda: `conda install biopython ; conda install -c bioconda pysam`.
+This script makes use of [Biopython](https://biopython.org) and [pysam](https://pypi.org/project/pysam/). Both must be present on the system, and can be installed with conda: `conda install biopython ; conda install -c bioconda pysam`.
 
 ### Calculation of per-position nucleotide diversity and proportion of non-reference alleles from a metagenome
 
 This script [link to python script calc_pi_from_pileup_v1.py] allows to calculate the nucleotide diversity ($\pi$) and the proportion of non-reference alleles from a bam file pileup, at positions defined by the user.
 
-The nucleotide diversity (pi) can be seen as the probability for 2 reads to present the same nucleotide at a given position. It is calculated as $\pi=1-(a^2+c^2+t^2+g^2)$ with a, t, c, g the frequency of each nucleotide at the position of interest (see also the Methods in https://doi.org/10.1038/s41396-020-0655-x ).
+The nucleotide diversity (pi) can be seen as the probability for 2 reads to present the same nucleotide at a given position. It is calculated as $\pi=1-(a^2+c^2+t^2+g^2)$ with a, t, c, g the frequency of each nucleotide at the position of interest (see also the Methods in [Soil bacterial populations are shaped by recombination and gene-specific selection across a grassland meadow | The ISME Journal](https://doi.org/10.1038/s41396-020-0655-x)).
 
 The proportion of non-reference alleles (nonref_ratio) is the proportion of reads at a given position that show a nucleotide differing from the reference nucleotide.
 
@@ -127,13 +127,13 @@ To see all options and arguments, run `python calc_pi_from_pileup_v1.py -h`:
 
 #### Dependencies:
 
-This script makes use of Biopython [link to biopython [https://biopython.org/]](https://biopython.org/%5D) and pysam [link to numpy https://numpy.org/ )]. Both must be present on the system, and can be installed with conda: `conda install biopython numpy`.
+This script makes use of [Biopython](https://biopython.org/) and [numpy](https://numpy.org/). Both must be present on the system, and can be installed with conda: `conda install biopython numpy`.
 
 ### Extraction of the proportion of each nucleotide at VR positions from a metagenome
 
 This script [link to python nt_prop_from_pileup_v2.py] allows to report the frequency of each nucleotide (a, t, c, g), the nucleotide diversity ($\pi$) and the proportion of non-reference alleles, from a bam file pileup, at positions defined by the user.
 
-The nucleotide diversity (pi) can be seen as the probability for 2 reads to present the same nucleotide at a given position. It is calculated as \pi=1-(a^2+c^2+t^2+g^2) with a, t, c, g the frequency of each nucleotide at the position of interest (see also the Methods in [Soil bacterial populations are shaped by recombination and gene-specific selection across a grassland meadow | The ISME Journal](https://doi.org/10.1038/s41396-020-0655-x) ).
+The nucleotide diversity (pi) can be seen as the probability for 2 reads to present the same nucleotide at a given position. It is calculated as \pi=1-(a^2+c^2+t^2+g^2) with a, t, c, g the frequency of each nucleotide at the position of interest (see also the Methods in [Soil bacterial populations are shaped by recombination and gene-specific selection across a grassland meadow | The ISME Journal](https://doi.org/10.1038/s41396-020-0655-x)).
 
 The proportion of non-reference alleles (nonref_ratio) is the proportion of reads at a given position that show a nucleotide differing from the reference nucleotide.
 
@@ -192,7 +192,7 @@ To see all options and arguments, run `python nt_prop_from_pileup_v2.py -h`:
 
 #### Dependencies:
 
-This script makes use of Biopython [link to biopython [https://biopython.org/]](https://biopython.org/%5D) and pysam [link to numpy [https://numpy.org/](https://numpy.org/) )]. Both must be present on the system, and can be installed with conda: `conda install biopython numpy`.
+This script makes use of [Biopython](https://biopython.org/) and [numpy](https://numpy.org/). Both must be present on the system, and can be installed with conda: `conda install biopython numpy`.
 
 ## R scripts (R markdowns)
 
