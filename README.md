@@ -12,7 +12,15 @@ The script takes a fasta file with a single sequence (it does not support multi-
 
 The script can either extract the TR sequence from the TR coordinates (default), or from the TR sequence indicated in the input file (with the flag `--tr_from_file`) to accomodate potential VR-TR indels (in our case a 3bp deletion in the VR).
 
-The input file should be formatted as in the example file [link to example input file]. Note that to be accurate, the coordinates should be 1-based (as found in a genbank file), the start coordinate should correspond to the first base, and the end coordinate to the last base.
+#### Input files
+
+For the input fasta file, only single-sequence fasta is supported. If your genome has multiple contigs, please use a fasta file with only the contig of interest.
+
+The input "regions file" with regions coordinates should be formatted as in the [example_regions_file_for_count_AA_possibilities](./example_input_files/example_regions_file_for_count_AA_possibilities.txt). If you include a header in this file, it must be commented with a # (see example file). Note that to be accurate, the coordinates should be 1-based (as found in a genbank file), i.e. the start coordinate should correspond to the first base, and the end coordinate to the last base. 
+
+**Important: if the Target is on the minus strand, the start coordinate must be greater than the end coordinate (this is how the script recognizes the strand, allowing it to extract the sequence correctly). The same applies to VR and TR coordinates.**
+
+#### Output
 
 The tab-delimited output file has a line for each DGR-targeted codon and 14 columns:
 
@@ -44,11 +52,49 @@ The tab-delimited output file has a line for each DGR-targeted codon and 14 colu
 
 - VR_nb_possible_combinations: the number of possible combinations of amino-acids at the VR level (this will be the same value for all codons of a given VR)
 
+#### Script usage
+
 To see the script usage, run `python count_AA_possibilities_in_DGR_regions_v3.py -h`:
 
 [paste usage]
 
-Dependencies:
+```
+usage: count_AA_possibilities_in_DGR_regions_v3.py [-h] [-r REGIONS_FILE]
+                                                   [-o OUTPUT_FILE]
+                                                   [-i --input_file INPUT_FILE]
+                                                   [--tr_from_file] [-d]
+
+Takes a fasta file with a single sequence and a table of DGR coordinates with
+target, VR and TR coordinates and TR sequence, and outputs the number of
+possible amino-acids for each putatively variable position in each VR of each
+target. V1 implements a way to take into account multiple variable positions
+within a codon. v2 considers codon sequence from the TR, not the target (but
+still using target sequence to know where codons start and end). v3 adds the
+possibility to use TR sequence from the input file to accomodate potential
+mismatches (in our case a 3bp deletion in the VR), and adds codon sequence to
+output file.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -r REGIONS_FILE, --regions_file REGIONS_FILE
+                        Name or path to input file with the VR regions
+                        coordinates. Must be 'DGR Target_ID VR_number VR_ID
+                        Target start Target end VR start VR end VRsize TR
+                        start TR end TR seq'.
+  -o OUTPUT_FILE, --output_file OUTPUT_FILE
+                        Name or path for output tab-delimited file.
+  -i --input_file INPUT_FILE
+                        Name or path of the fasta file of the genome (for now
+                        only single-sequence fasta files are accepted).
+  --tr_from_file        Flag. If set, the program will use the TR sequence
+                        provided in the input regions file. Otherwise, it
+                        extracts the TR sequence from the fasta file based on
+                        the TR coordinates. By default the flag is not set and
+                        the sequence is extracted based on TR coordinates.
+  -d, --debug_mode      Enable debug mode (very verbose).
+```
+
+#### Dependencies
 
 This script makes use of [Biopython](https://biopython.org). Biopython must be present on the system, and can be installed with conda: `conda install biopython` 
 
@@ -56,15 +102,54 @@ This script makes use of [Biopython](https://biopython.org). Biopython must be p
 
 The python script [filter_bam_by_mate_location.py](./python_scripts/filter_bam_by_mate_location.py) allows to filter a bam file to keep only pairs of reads in which one of the reads aligns to a variable region, and the other read of the pair is within a certain genomic distance set by the user.
 
-The script takes as input a list of sorted and indexed bam files (1 per line), a file with start and end coordinates of regions of interest (see example input file [link to example]), and a window size. It outputs new bam files with only reads mapping within the region of interest whose mate is within the defined window (1000 bp by default).
+#### Input files
+
+The script takes as input a list of sorted and indexed bam files (1 per line), a file with start and end coordinates of regions of interest (see [example_regions_file_for_filter_bam_and_calc_pi](./example_input_files/example_regions_file_for_filter_bam_and_calc_pi.txt)). If you include a header in this file, it must be commented with a #. 
 
 The script was only tested with bam files containing a single reference (i.e. with reads mapped to a single-sequence fasta file). It is very likely that it won't work with bam files containing multiple references. If you have a genome with multiple contigs, choose only the contig containing the DGR locus or loci before doing the mapping, or extract this contig from the bam file before running the script.
 
+#### Output
+
+The script outputs new bam files (as many as in the input list), with only reads mapping within the region of interest whose mate is within the defined window (1000 bp by default).
+
+#### Script usage
+
 To see all arguments, run `python filter_bam_by_mate_location.py -h`
 
-[paste usage]
+```
+usage: filter_bam_by_mate_location.py [-h] [-b BAM_LIST] [-r REGIONS_FILE]
+                                      [-s SUFFIX]
+                                      [--mq_threshold MQ_THRESHOLD]
+                                      [--window WINDOW] [-d]
 
-Dependencies:
+Takes as input a list of bam files (1 per line), start and end coordinates of
+regions of interest and a window size, and creates new bam files with only
+reads mapping within the region of interest whose mate is within the defined
+window.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -b BAM_LIST, --bam_list BAM_LIST
+                        Name or path to input list of bam files. Must be 1
+                        file/line, with full path.
+  -r REGIONS_FILE, --regions_file REGIONS_FILE
+                        Name or path to input file with the VR regions
+                        coordinates.
+  -s SUFFIX, --suffix SUFFIX
+                        Suffix for output subsetted bam file. The '.bam' of
+                        the input bam will be replaced by 'suffix.bam'.
+                        Default is 'subsetted'
+  --mq_threshold MQ_THRESHOLD
+                        Int. Minimum mapping quality for a read to be
+                        considered. Default is 0.
+  --window WINDOW       Int. Window in which the mate is looked for. The mate
+                        will be looked for in the sequence defined by
+                        [region_start - window, region_end + window]. Default
+                        is 1000.
+  -d, --debug_mode      Enable debug mode (very verbose).
+```
+
+#### Dependencies
 
 This script makes use of [Biopython](https://biopython.org) and [pysam](https://pypi.org/project/pysam/). Both must be present on the system, and can be installed with conda: `conda install biopython ; conda install -c bioconda pysam`.
 
@@ -89,13 +174,13 @@ samtools mpileup -a --fasta-ref /your_path/to_reference_genome/reference_genome.
 #These two options are needed: --fasta-ref to have the reference allele and -a to output positions with no read
 ```
 
-The script also needs a "regions file" containing the coordinates of the regions of interest (e.g. DGR variable repeats). The coordinates file must be a tab-delimited file with the following columns: 
+The script also needs a "regions file" containing the coordinates of the regions of interest (e.g. DGR variable repeats). The coordinates file must be a tab-delimited file with the following columns (see [example_regions_file_for_filter_bam_and_calc_pi](./example_input_files/example_regions_file_for_filter_bam_and_calc_pi.txt)): 
 `#Target_ID    VR_number    VR_ID    Target start    Target end    VR start    VR end`
 
-If you include a header in this file, it must be commented with a # (see example file [link to example file]). 
-**Important: if the Target is on the minus strand, the start coordinate must be greater than the end coordinate (this is how the script recognizes the strand, allowing it to extract the sequence correctly). The same applies to VR and TR coordinates.**
+If you include a header in this file, it must be commented with a # (see example file). 
+**Important: the VR start coordinate must always be lower than the VR end coordinate.** (I know this can be confusing between my different scripts, and might fix it in the future).
 
-#### Output file
+#### Output
 
 (Note that this script was designed for the study of an organism with many DGR loci. For this reason, it gives a condensed output that is not the easiest to parse. I you have a single DGR locus, consider using the script `nt_prop_from_pileup_v2.py` below, which also outputs the nucleotide diversity and proportion of non-reference alleles, with one line per genomic position.)
 
@@ -125,7 +210,32 @@ Here the output is a tab-delimited file, with the following colums:
 
 To see all options and arguments, run `python calc_pi_from_pileup_v1.py -h`:
 
-#### Dependencies:
+```
+usage: calc_pi_from_pileup_v1.py [-h] [-r REGIONS_FILE] [-o OUTPUT_FILE]
+                                 [-i --input_file INPUT_FILE]
+                                 [-c --cov_cutoff COV_CUTOFF] [-d]
+
+This script allows to calculate the nucleotide diversity (pi) and the
+proportion of non-reference alleles from a bam file pileup, at positions
+defined by the user.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -r REGIONS_FILE, --regions_file REGIONS_FILE
+                        Name or path to input file with the VR regions
+                        coordinates.
+  -o OUTPUT_FILE, --output_file OUTPUT_FILE
+                        Name or path for output tab-delimited file.
+  -i --input_file INPUT_FILE
+                        Name or path of input_file from samtools mpileup with
+                        -a and --fasta-ref options.
+  -c --cov_cutoff COV_CUTOFF
+                        Int. The coverage cutoff at a position to calculate
+                        statistics.
+  -d, --debug_mode      Enable debug mode (very verbose).
+```
+
+#### Dependencies
 
 This script makes use of [Biopython](https://biopython.org/) and [numpy](https://numpy.org/). Both must be present on the system, and can be installed with conda: `conda install biopython numpy`.
 
@@ -150,12 +260,12 @@ samtools mpileup -a --fasta-ref /your_path/to_reference_genome/reference_genome.
 #These two options are needed: --fasta-ref to have the reference allele and -a to output positions with no read
 ```
 
-The script also needs a "regions file" containing the coordinates of the regions of interest (e.g. DGR variable repeats). The coordinates file must be a tab-delimited file with the following columns: `#Target_ID    VR_number    VR_ID    Target start    Target end    VR start    VR end    TR start    TR end`
+The script also needs a "regions file" containing the coordinates of the regions of interest (e.g. DGR variable repeats). The coordinates file must be a tab-delimited file with the following columns (see [example_regions_file_for_nt_prop](./example_input_files/example_regions_file_for_nt_prop.txt)): `#Target_ID    VR_number    VR_ID    Target start    Target end    VR start    VR end    TR start    TR end`
 
-If you include a header in this file, it must be commented with a # (see example file [link to example file]). 
+If you include a header in this file, it must be commented with a # (see example file). 
 **Important: if the Target is on the minus strand, the start coordinate must be greater than the end coordinate (this is how the script recognizes the strand, allowing it to extract the sequence correctly). The same applies to VR and TR coordinates.**
 
-#### Output file
+#### Output
 
 The output is a single tab-delimited file with the following columns:
 
@@ -190,11 +300,44 @@ This is a "long" format designed to be easily plotted with ggplot in R, so for e
 
 To see all options and arguments, run `python nt_prop_from_pileup_v2.py -h`:
 
+```
+usage: nt_prop_from_pileup_v2.py [-h] [-r REGIONS_FILE] [-o OUTPUT_FILE]
+                                 [-i INPUT_FILE] [-c COV_CUTOFF] [-d]
+
+Takes a table file with the coordinates of the regions of interest, and a
+pileup file obtained by running samtools mpileup on a bam file (with -a and
+--fasta-ref options). Outputs a table of each nt proportion at each position
+of each region. It also calculates nucleotide diversity (pi) and non-reference
+allele proportion as a bonus. v1 modifies pi and non-reference allele
+proportion to use the sum of A + T + C + G instead of the coverage calculated
+by mpileup, which includes Ns. V2 brings a correction for when VR is on the
+minus strand.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -r REGIONS_FILE, --regions_file REGIONS_FILE
+                        Name or path to input file with the VR and TR regions
+                        coordinates.
+  -o OUTPUT_FILE, --output_file OUTPUT_FILE
+                        Name or path for output tab-delimited file.
+  -i INPUT_FILE, --input_file INPUT_FILE
+                        Name or path of input_file from samtools mpileup with
+                        -a and --fasta-ref options.
+  -c COV_CUTOFF, --cov_cutoff COV_CUTOFF
+                        Int. The coverage cutoff at a position to calculate
+                        statistics. Default: 5.
+  -d, --debug_mode      Enable debug mode (very verbose).
+```
+
+
+
 #### Dependencies:
 
 This script makes use of [Biopython](https://biopython.org/) and [numpy](https://numpy.org/). Both must be present on the system, and can be installed with conda: `conda install biopython numpy`.
 
 ## R scripts (R markdowns)
+
+These scripts will be made available upon acceptance of the manuscript.
 
 ### Representation of nucleotide diversity and non-reference ratio
 

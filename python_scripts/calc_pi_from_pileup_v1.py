@@ -125,7 +125,7 @@ def write_output(results, regions, output_file) :
 if __name__ == '__main__':
     
     ##OPTION PARSER##
-    parser = argparse.ArgumentParser(description='This script [link to python script] allows to calculate the nucleotide diversity (pi) and the proportion of non-reference alleles from a bam file pileup, at positions defined by the user.',
+    parser = argparse.ArgumentParser(description='This script allows to calculate the nucleotide diversity (pi) and the proportion of non-reference alleles from a bam file pileup, at positions defined by the user.',
         epilog='Last modification on '+__last_modification__+' by '+__author__)
     parser.add_argument("-r","--regions_file",dest = "regions_file", help = "Name or path to input file with the VR regions coordinates.")
     parser.add_argument("-o","--output_file",dest = "output_file",help = "Name or path for output tab-delimited file.")
