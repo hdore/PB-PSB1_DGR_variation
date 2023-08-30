@@ -17,7 +17,6 @@ The script can either extract the TR sequence from the TR coordinates (default),
 For the input fasta file, only single-sequence fasta is supported. If your genome has multiple contigs, please use a fasta file with only the contig of interest.
 
 The input "regions file" with regions coordinates should be formatted as in the [example_regions_file_for_count_AA_possibilities](./example_input_files/example_regions_file_for_count_AA_possibilities.txt). If you include a header in this file, it must be commented with a # (see example file). Note that to be accurate, the coordinates should be 1-based (as found in a genbank file), i.e. the start coordinate should correspond to the first base, and the end coordinate to the last base. 
-
 **Important: if the Target is on the minus strand, the start coordinate must be greater than the end coordinate (this is how the script recognizes the strand, allowing it to extract the sequence correctly). The same applies to VR and TR coordinates.**
 
 #### Output
@@ -328,8 +327,6 @@ optional arguments:
                         statistics. Default: 5.
   -d, --debug_mode      Enable debug mode (very verbose).
 ```
-
-
 
 #### Dependencies:
 
