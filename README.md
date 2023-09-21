@@ -1,4 +1,4 @@
-# Scripts used in the PB-PSB1 DGR article
+# Scripts developed to analyze DGR-mediated hypermutation in *Thiohalocapsa* PB-PSB1
 
 This github repository holds the scripts used to perform the analyses described in the article [insert title and DOI and link].
 
