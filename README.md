@@ -55,8 +55,6 @@ The tab-delimited output file has a line for each DGR-targeted codon and 14 colu
 
 To see the script usage, run `python count_AA_possibilities_in_DGR_regions_v3.py -h`:
 
-[paste usage]
-
 ```
 usage: count_AA_possibilities_in_DGR_regions_v3.py [-h] [-r REGIONS_FILE]
                                                    [-o OUTPUT_FILE]
@@ -331,5 +329,3 @@ optional arguments:
 #### Dependencies:
 
 This script makes use of [Biopython](https://biopython.org/) and [numpy](https://numpy.org/). Both must be present on the system, and can be installed with conda: `conda install biopython numpy`.
-
-## 
