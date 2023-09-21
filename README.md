@@ -332,14 +332,4 @@ optional arguments:
 
 This script makes use of [Biopython](https://biopython.org/) and [numpy](https://numpy.org/). Both must be present on the system, and can be installed with conda: `conda install biopython numpy`.
 
-## R scripts (R markdowns)
-
-These scripts will be made available upon acceptance of the manuscript.
-
-### Representation of nucleotide diversity and non-reference ratio
-
-This R script enables to generate figures from the calculated nucleotide diversity and non-reference ratio. It generates figures at the VR-level, and then summary figures as in the published article.
-
-### Representation of the proportion of nucleotides at each position of a VR
-
-This R script generates figures from the calculated proportion of nucleotide at each VR position.  
+## 
