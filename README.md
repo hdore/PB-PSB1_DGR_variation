@@ -1,5 +1,7 @@
 # Scripts developed to analyze DGR-mediated hypermutation in *Thiohalocapsa* PB-PSB1
 
+[![DOI](https://zenodo.org/badge/684630753.svg)](https://zenodo.org/doi/10.5281/zenodo.10569842)
+
 This github repository holds the scripts used to perform the analyses described in the article Targeted hypermutation of putative
 antigen sensors in multicellular bacteria [DOI and link].
 
