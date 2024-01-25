@@ -1,6 +1,7 @@
 # Scripts developed to analyze DGR-mediated hypermutation in *Thiohalocapsa* PB-PSB1
 
-This github repository holds the scripts used to perform the analyses described in the article [insert title and DOI and link].
+This github repository holds the scripts used to perform the analyses described in the article Targeted hypermutation of putative
+antigen sensors in multicellular bacteria [DOI and link].
 
 ## Python scripts
 
@@ -329,3 +330,7 @@ optional arguments:
 #### Dependencies:
 
 This script makes use of [Biopython](https://biopython.org/) and [numpy](https://numpy.org/). Both must be present on the system, and can be installed with conda: `conda install biopython numpy`.
+
+## License
+
+This project is licensed under the terms of the MIT license.
